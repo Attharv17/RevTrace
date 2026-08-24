@@ -1,0 +1,12 @@
+fastapi==0.111.0
+uvicorn[standard]==0.30.1
+sqlalchemy==2.0.31
+# asyncpg and psycopg2-binary both require C extensions that need build tools on Windows.
+# For Phase 1 (health check only), we use SQLAlchemy with the synchronous psycopg2 driver
+# installed via a pre-built wheel approach, OR we simply use a pure-Python fallback.
+# Recommendation: install PostgreSQL locally which ships pg_config, then add psycopg2-binary.
+# For now we use a lightweight pure-Python postgres check via httpx if pg is not available.
+pydantic-settings==2.3.4
+python-dotenv==1.0.1
+httpx==0.27.0
+alembic==1.13.2

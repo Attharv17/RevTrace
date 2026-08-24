@@ -1,0 +1,185 @@
+/* =============================================================================
+   LedgerPilot — Global Design System
+   ============================================================================= */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── CSS Custom Properties ────────────────────────────────────────────────── */
+:root {
+  /* Light mode */
+  --bg-base:        #F4F6F9;
+  --bg-surface:     #FFFFFF;
+  --bg-surface-2:   #F8FAFC;
+  --bg-surface-3:   #F1F5F9;
+  --border:         #E2E8F0;
+  --border-strong:  #CBD5E1;
+  --text-primary:   #111827;
+  --text-secondary: #6B7280;
+  --text-muted:     #9CA3AF;
+  --navy:           #1B3A6B;
+  --accent-blue:    #3B82F6;
+  --accent-green:   #10B981;
+  --accent-amber:   #F59E0B;
+  --accent-red:     #EF4444;
+  --sidebar-width:  256px;
+  --sidebar-collapsed: 72px;
+  --topbar-height:  64px;
+}
+
+.dark {
+  --bg-base:        #0F1523;
+  --bg-surface:     #1A2235;
+  --bg-surface-2:   #1E2940;
+  --bg-surface-3:   #232E48;
+  --border:         #2D3748;
+  --border-strong:  #3D4D66;
+  --text-primary:   #F9FAFB;
+  --text-secondary: #9CA3AF;
+  --text-muted:     #6B7280;
+  --navy:           #2A5298;
+  --accent-blue:    #60A5FA;
+  --accent-green:   #34D399;
+  --accent-amber:   #FCD34D;
+  --accent-red:     #F87171;
+}
+
+/* ── Base Resets ──────────────────────────────────────────────────────────── */
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: "Inter", system-ui, sans-serif;
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    line-height: 1.6;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--border-strong);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+  }
+}
+
+/* ── Component Layer ──────────────────────────────────────────────────────── */
+@layer components {
+
+  /* Cards */
+  .card {
+    @apply bg-white dark:bg-[#1A2235] rounded-xl border border-[#E2E8F0] dark:border-[#2D3748]
+           shadow-card transition-shadow duration-200;
+  }
+  .card:hover {
+    @apply shadow-card-md;
+  }
+
+  /* KPI stat cards */
+  .kpi-card {
+    @apply card p-5 flex flex-col gap-3 animate-fade-in;
+  }
+
+  /* Buttons */
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white
+           bg-[#1B3A6B] dark:bg-[#2A5298] rounded-lg
+           hover:bg-[#162F57] dark:hover:bg-[#1B3A6B]
+           transition-colors duration-150 focus:outline-none focus:ring-2
+           focus:ring-[#3B82F6] focus:ring-offset-2;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 px-3 py-2 text-sm font-medium
+           text-[#6B7280] dark:text-[#9CA3AF] rounded-lg
+           hover:bg-[#F1F5F9] dark:hover:bg-[#232E48]
+           transition-colors duration-150;
+  }
+
+  /* Badges */
+  .badge {
+    @apply inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium;
+  }
+  .badge-success { @apply badge bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400; }
+  .badge-warning { @apply badge bg-amber-100  text-amber-700  dark:bg-amber-900/40  dark:text-amber-400;  }
+  .badge-danger  { @apply badge bg-red-100    text-red-700    dark:bg-red-900/40    dark:text-red-400;    }
+  .badge-info    { @apply badge bg-blue-100   text-blue-700   dark:bg-blue-900/40   dark:text-blue-400;   }
+  .badge-neutral { @apply badge bg-slate-100  text-slate-600  dark:bg-slate-800     dark:text-slate-400;  }
+
+  /* Page header */
+  .page-header {
+    @apply mb-6 flex items-center justify-between;
+  }
+  .page-title {
+    @apply text-xl font-semibold text-[#111827] dark:text-[#F9FAFB];
+  }
+  .page-subtitle {
+    @apply text-sm text-[#6B7280] dark:text-[#9CA3AF] mt-0.5;
+  }
+
+  /* Table */
+  .table-wrapper {
+    @apply w-full overflow-x-auto rounded-xl border border-[#E2E8F0] dark:border-[#2D3748];
+  }
+  .lp-table {
+    @apply w-full text-sm border-collapse;
+  }
+  .lp-table th {
+    @apply px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide
+           text-[#6B7280] dark:text-[#9CA3AF]
+           bg-[#F8FAFC] dark:bg-[#1E2940]
+           border-b border-[#E2E8F0] dark:border-[#2D3748];
+  }
+  .lp-table td {
+    @apply px-4 py-3 text-[#374151] dark:text-[#D1D5DB]
+           border-b border-[#F1F5F9] dark:border-[#232E48];
+  }
+  .lp-table tr:last-child td { @apply border-b-0; }
+  .lp-table tbody tr {
+    @apply hover:bg-[#F8FAFC] dark:hover:bg-[#1E2940] transition-colors duration-100;
+  }
+
+  /* Sidebar nav items */
+  .nav-item {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
+           text-[#6B7280] dark:text-[#9CA3AF]
+           hover:bg-[#F1F5F9] dark:hover:bg-[#232E48]
+           hover:text-[#1B3A6B] dark:hover:text-[#60A5FA]
+           transition-all duration-150 cursor-pointer select-none;
+  }
+  .nav-item.active {
+    @apply bg-[#EEF2FF] dark:bg-[#1B3A6B]/30
+           text-[#1B3A6B] dark:text-[#60A5FA]
+           font-semibold;
+  }
+
+  /* Status indicator dot */
+  .status-dot {
+    @apply inline-block w-2 h-2 rounded-full;
+  }
+  .status-dot-green  { @apply status-dot bg-emerald-500; }
+  .status-dot-amber  { @apply status-dot bg-amber-400; }
+  .status-dot-red    { @apply status-dot bg-red-500; }
+}
