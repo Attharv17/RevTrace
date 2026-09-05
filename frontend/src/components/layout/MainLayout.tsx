@@ -6,19 +6,21 @@ import { cn } from "@/lib/utils";
 
 // Map route paths → readable page titles
 const PAGE_TITLES: Record<string, string> = {
-  "/":               "Overview",
-  "/reconciliation": "Reconciliation",
-  "/exceptions":     "Exceptions",
-  "/settlements":    "Settlements",
-  "/cash-position":  "Cash Position",
-  "/ai-assistant":   "AI Assistant",
-  "/audit-trail":    "Audit Trail",
+  "/overview":      "Overview",
+  "/recovery":      "Recovery",
+  "/opportunities": "Opportunities",
+  "/transactions":  "Transactions",
+  "/analytics":     "Analytics",
+  "/assistant":     "AI Assistant",
+  "/simulator":     "Simulator",
+  "/audit":         "Audit Log",
+  "/evaluation":    "Evaluation",
 };
 
 export function MainLayout() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const location = useLocation();
-  const pageTitle = PAGE_TITLES[location.pathname] ?? "LedgerPilot";
+  const pageTitle = PAGE_TITLES[location.pathname] ?? "RevTrace";
 
   return (
     <div className="min-h-screen bg-[var(--bg-base)]">

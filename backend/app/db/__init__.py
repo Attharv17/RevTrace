@@ -1,1 +1,1 @@
-# LedgerPilot — Backend __init__ files
+# RevTrace — Database package

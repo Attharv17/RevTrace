@@ -1,7 +1,7 @@
 import axios from "axios";
 
 /**
- * Axios instance pre-configured for the LedgerPilot API.
+ * Axios instance pre-configured for the RevTrace API.
  * In dev, Vite proxies /api → http://localhost:8000
  * In prod, set VITE_API_BASE_URL in .env
  */
@@ -14,9 +14,9 @@ const apiClient = axios.create({
   },
 });
 
-// ── Request interceptor (auth headers will go here in Phase 3) ──────────────
+// ── Request interceptor (auth headers will go here in a later phase) ─────────
 apiClient.interceptors.request.use((config) => {
-  // const token = localStorage.getItem("lp_access_token");
+  // const token = localStorage.getItem("rt_access_token");
   // if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
@@ -27,7 +27,7 @@ apiClient.interceptors.response.use(
   (error) => {
     const message =
       error.response?.data?.detail ?? error.message ?? "Unknown error";
-    console.error("[LedgerPilot API Error]", message, error.response?.status);
+    console.error("[RevTrace API Error]", message, error.response?.status);
     return Promise.reject(error);
   }
 );
@@ -35,9 +35,11 @@ apiClient.interceptors.response.use(
 export default apiClient;
 
 // ── Typed helper functions ───────────────────────────────────────────────────
+import type { AxiosRequestConfig } from "axios";
+
 export const api = {
-  get:    <T>(url: string)             => apiClient.get<T>(url).then((r) => r.data),
-  post:   <T>(url: string, data: unknown) => apiClient.post<T>(url, data).then((r) => r.data),
-  put:    <T>(url: string, data: unknown) => apiClient.put<T>(url, data).then((r) => r.data),
-  delete: <T>(url: string)             => apiClient.delete<T>(url).then((r) => r.data),
+  get:    <T>(url: string, config?: AxiosRequestConfig)              => apiClient.get<T>(url, config).then((r) => r.data),
+  post:   <T>(url: string, data: unknown, config?: AxiosRequestConfig) => apiClient.post<T>(url, data, config).then((r) => r.data),
+  put:    <T>(url: string, data: unknown, config?: AxiosRequestConfig) => apiClient.put<T>(url, data, config).then((r) => r.data),
+  delete: <T>(url: string, config?: AxiosRequestConfig)              => apiClient.delete<T>(url, config).then((r) => r.data),
 };

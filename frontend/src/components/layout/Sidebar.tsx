@@ -2,11 +2,13 @@ import { NavLink, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
   RefreshCcw,
-  AlertTriangle,
-  Landmark,
-  Wallet,
+  Target,
+  CreditCard,
+  BarChart2,
   Bot,
+  FlaskConical,
   ClipboardList,
+  CheckSquare,
   ChevronLeft,
   ChevronRight,
   Zap,
@@ -19,13 +21,15 @@ interface SidebarProps {
 }
 
 const NAV_ITEMS = [
-  { id: "overview",       label: "Overview",       path: "/",              icon: LayoutDashboard },
-  { id: "reconciliation", label: "Reconciliation", path: "/reconciliation", icon: RefreshCcw },
-  { id: "exceptions",     label: "Exceptions",     path: "/exceptions",    icon: AlertTriangle,  badge: 3 },
-  { id: "settlements",    label: "Settlements",    path: "/settlements",   icon: Landmark },
-  { id: "cash-position",  label: "Cash Position",  path: "/cash-position", icon: Wallet },
-  { id: "ai-assistant",   label: "AI Assistant",   path: "/ai-assistant",  icon: Bot },
-  { id: "audit-trail",    label: "Audit Trail",    path: "/audit-trail",   icon: ClipboardList },
+  { id: "overview",      label: "Overview",      path: "/overview",      icon: LayoutDashboard },
+  { id: "recovery",      label: "Recovery",       path: "/recovery",      icon: RefreshCcw },
+  { id: "opportunities", label: "Opportunities",  path: "/opportunities", icon: Target },
+  { id: "transactions",  label: "Transactions",   path: "/transactions",  icon: CreditCard },
+  { id: "analytics",     label: "Analytics",      path: "/analytics",     icon: BarChart2 },
+  { id: "assistant",     label: "AI Assistant",   path: "/assistant",     icon: Bot },
+  { id: "simulator",     label: "Simulator",      path: "/simulator",     icon: FlaskConical },
+  { id: "audit",         label: "Audit Log",      path: "/audit",         icon: ClipboardList },
+  { id: "evaluation",    label: "Evaluation",     path: "/evaluation",    icon: CheckSquare },
 ];
 
 export function Sidebar({ collapsed, onToggle }: SidebarProps) {
@@ -47,16 +51,16 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
           collapsed ? "justify-center" : "gap-3"
         )}
       >
-        <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-navy-500 dark:bg-navy-600 flex items-center justify-center">
+        <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-[#7C3AED] flex items-center justify-center shadow-sm">
           <Zap size={16} className="text-white" />
         </div>
         {!collapsed && (
           <div className="animate-fade-in">
             <p className="text-sm font-bold text-[var(--text-primary)] tracking-tight leading-none">
-              LedgerPilot
+              RevTrace
             </p>
             <p className="text-[10px] text-[var(--text-muted)] font-medium uppercase tracking-widest mt-0.5">
-              Finance Control
+              Revenue Recovery
             </p>
           </div>
         )}
@@ -64,9 +68,8 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
 
       {/* ── Navigation ───────────────────────────────────────────────── */}
       <nav className="flex-1 overflow-y-auto py-4 px-2 space-y-0.5">
-        {NAV_ITEMS.map(({ id, label, path, icon: Icon, badge }) => {
-          const isActive =
-            path === "/" ? location.pathname === "/" : location.pathname.startsWith(path);
+        {NAV_ITEMS.map(({ id, label, path, icon: Icon }) => {
+          const isActive = location.pathname === path;
 
           return (
             <NavLink
@@ -91,14 +94,6 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
               {!collapsed && (
                 <span className="flex-1 truncate animate-fade-in">{label}</span>
               )}
-              {badge && !collapsed && (
-                <span className="ml-auto flex-shrink-0 bg-accent-red text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">
-                  {badge}
-                </span>
-              )}
-              {badge && collapsed && (
-                <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-accent-red" />
-              )}
             </NavLink>
           );
         })}
@@ -107,6 +102,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
       {/* ── Collapse Toggle ───────────────────────────────────────────── */}
       <div className="p-2 border-t border-[var(--border)]">
         <button
+          id="sidebar-collapse-btn"
           onClick={onToggle}
           className={cn(
             "w-full flex items-center justify-center p-2 rounded-lg",

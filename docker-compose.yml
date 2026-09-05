@@ -1,7 +1,7 @@
 version: "3.9"
 
 networks:
-  ledgerpilot_net:
+  revtrace_net:
     driver: bridge
 
 volumes:
@@ -11,19 +11,19 @@ services:
   # ── PostgreSQL ────────────────────────────────────────────────────────────
   postgres:
     image: postgres:16-alpine
-    container_name: ledgerpilot_postgres
+    container_name: revtrace_postgres
     environment:
-      POSTGRES_USER: ledger
-      POSTGRES_PASSWORD: ledger
-      POSTGRES_DB: ledgerpilot
+      POSTGRES_USER: revtrace
+      POSTGRES_PASSWORD: revtrace
+      POSTGRES_DB: revtrace
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - ledgerpilot_net
+      - revtrace_net
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ledger -d ledgerpilot"]
+      test: ["CMD-SHELL", "pg_isready -U revtrace -d revtrace"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -33,17 +33,17 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: ledgerpilot_backend
+    container_name: revtrace_backend
     env_file: ./backend/.env
     environment:
-      DATABASE_URL: postgresql+asyncpg://ledger:ledger@postgres:5432/ledgerpilot
+      DATABASE_URL: postgresql+asyncpg://revtrace:revtrace@postgres:5432/revtrace
     ports:
       - "8000:8000"
     depends_on:
       postgres:
         condition: service_healthy
     networks:
-      - ledgerpilot_net
+      - revtrace_net
     volumes:
       - ./backend:/app
     command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
@@ -53,11 +53,11 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: ledgerpilot_frontend
+    container_name: revtrace_frontend
     ports:
       - "5173:5173"
     networks:
-      - ledgerpilot_net
+      - revtrace_net
     volumes:
       - ./frontend:/app
       - /app/node_modules

@@ -1,12 +1,35 @@
+# ── RevTrace API — Python Dependencies ────────────────────────────────────────
+
+# Web framework
 fastapi==0.111.0
 uvicorn[standard]==0.30.1
+
+# Database
 sqlalchemy==2.0.31
-# asyncpg and psycopg2-binary both require C extensions that need build tools on Windows.
-# For Phase 1 (health check only), we use SQLAlchemy with the synchronous psycopg2 driver
-# installed via a pre-built wheel approach, OR we simply use a pure-Python fallback.
-# Recommendation: install PostgreSQL locally which ships pg_config, then add psycopg2-binary.
-# For now we use a lightweight pure-Python postgres check via httpx if pg is not available.
+asyncpg==0.29.0          # PostgreSQL async driver (Docker / prod)
+aiosqlite==0.20.0        # SQLite async driver (local dev fallback)
+alembic==1.13.2          # DB migrations (Phase 2+)
+
+# Configuration & validation
+pydantic==2.7.4
 pydantic-settings==2.3.4
 python-dotenv==1.0.1
+
+# HTTP client (health check + future integrations)
 httpx==0.27.0
-alembic==1.13.2
+
+# File upload support
+python-multipart==0.0.9
+
+# Testing
+pytest==8.2.2
+pytest-asyncio==0.23.7
+
+# ── Phase 6: Machine Learning ────────────────────────────────────────────────
+pandas==2.2.2
+scikit-learn==1.5.0
+xgboost==2.0.3
+joblib==1.4.2
+
+# ── Phase 7: AI Investigation Agent ──────────────────────────────────────────
+google-genai>=2.0.0

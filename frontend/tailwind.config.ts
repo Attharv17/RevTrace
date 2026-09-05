@@ -32,7 +32,7 @@ export default {
           900: "#0F172A",
           950: "#0A0F1E",
         },
-        // ── Accent blues ────────────────────────────────────────────
+        // ── Accent palette ───────────────────────────────────────────
         accent: {
           blue:       "#3B82F6",
           "blue-lt":  "#60A5FA",
@@ -40,6 +40,9 @@ export default {
           "green-lt": "#34D399",
           amber:      "#F59E0B",
           red:        "#EF4444",
+          // RevTrace recovery accent
+          violet:     "#7C3AED",
+          "violet-lt":"#A78BFA",
         },
       },
       fontFamily: {

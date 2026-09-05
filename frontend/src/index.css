@@ -1,5 +1,6 @@
 /* =============================================================================
-   LedgerPilot — Global Design System
+   RevTrace — Global Design System
+   AI Revenue Recovery Engine
    ============================================================================= */
 
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap");
@@ -20,14 +21,22 @@
   --text-primary:   #111827;
   --text-secondary: #6B7280;
   --text-muted:     #9CA3AF;
+
+  /* Brand */
   --navy:           #1B3A6B;
   --accent-blue:    #3B82F6;
   --accent-green:   #10B981;
   --accent-amber:   #F59E0B;
   --accent-red:     #EF4444;
-  --sidebar-width:  256px;
-  --sidebar-collapsed: 72px;
-  --topbar-height:  64px;
+
+  /* RevTrace recovery accent — deep violet for recovery actions */
+  --accent-violet:  #7C3AED;
+  --accent-violet-light: #EDE9FE;
+
+  /* Layout */
+  --sidebar-width:      256px;
+  --sidebar-collapsed:  72px;
+  --topbar-height:      64px;
 }
 
 .dark {
@@ -45,6 +54,8 @@
   --accent-green:   #34D399;
   --accent-amber:   #FCD34D;
   --accent-red:     #F87171;
+  --accent-violet:  #A78BFA;
+  --accent-violet-light: #1E1433;
 }
 
 /* ── Base Resets ──────────────────────────────────────────────────────────── */
@@ -92,10 +103,10 @@
   /* Cards */
   .card {
     @apply bg-white dark:bg-[#1A2235] rounded-xl border border-[#E2E8F0] dark:border-[#2D3748]
-           shadow-card transition-shadow duration-200;
+           shadow-sm transition-shadow duration-200;
   }
   .card:hover {
-    @apply shadow-card-md;
+    @apply shadow-md;
   }
 
   /* KPI stat cards */
@@ -111,6 +122,13 @@
            transition-colors duration-150 focus:outline-none focus:ring-2
            focus:ring-[#3B82F6] focus:ring-offset-2;
   }
+  .btn-recovery {
+    @apply inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white
+           bg-[#7C3AED] dark:bg-[#6D28D9] rounded-lg
+           hover:bg-[#6D28D9] dark:hover:bg-[#5B21B6]
+           transition-colors duration-150 focus:outline-none focus:ring-2
+           focus:ring-[#7C3AED] focus:ring-offset-2;
+  }
   .btn-ghost {
     @apply inline-flex items-center gap-2 px-3 py-2 text-sm font-medium
            text-[#6B7280] dark:text-[#9CA3AF] rounded-lg
@@ -122,11 +140,12 @@
   .badge {
     @apply inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium;
   }
-  .badge-success { @apply badge bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400; }
-  .badge-warning { @apply badge bg-amber-100  text-amber-700  dark:bg-amber-900/40  dark:text-amber-400;  }
-  .badge-danger  { @apply badge bg-red-100    text-red-700    dark:bg-red-900/40    dark:text-red-400;    }
-  .badge-info    { @apply badge bg-blue-100   text-blue-700   dark:bg-blue-900/40   dark:text-blue-400;   }
-  .badge-neutral { @apply badge bg-slate-100  text-slate-600  dark:bg-slate-800     dark:text-slate-400;  }
+  .badge-success  { @apply badge bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400; }
+  .badge-warning  { @apply badge bg-amber-100  text-amber-700  dark:bg-amber-900/40  dark:text-amber-400;  }
+  .badge-danger   { @apply badge bg-red-100    text-red-700    dark:bg-red-900/40    dark:text-red-400;    }
+  .badge-info     { @apply badge bg-blue-100   text-blue-700   dark:bg-blue-900/40   dark:text-blue-400;   }
+  .badge-neutral  { @apply badge bg-slate-100  text-slate-600  dark:bg-slate-800     dark:text-slate-400;  }
+  .badge-recovery { @apply badge bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-400; }
 
   /* Page header */
   .page-header {
@@ -143,21 +162,21 @@
   .table-wrapper {
     @apply w-full overflow-x-auto rounded-xl border border-[#E2E8F0] dark:border-[#2D3748];
   }
-  .lp-table {
+  .rt-table {
     @apply w-full text-sm border-collapse;
   }
-  .lp-table th {
+  .rt-table th {
     @apply px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide
            text-[#6B7280] dark:text-[#9CA3AF]
            bg-[#F8FAFC] dark:bg-[#1E2940]
            border-b border-[#E2E8F0] dark:border-[#2D3748];
   }
-  .lp-table td {
+  .rt-table td {
     @apply px-4 py-3 text-[#374151] dark:text-[#D1D5DB]
            border-b border-[#F1F5F9] dark:border-[#232E48];
   }
-  .lp-table tr:last-child td { @apply border-b-0; }
-  .lp-table tbody tr {
+  .rt-table tr:last-child td { @apply border-b-0; }
+  .rt-table tbody tr {
     @apply hover:bg-[#F8FAFC] dark:hover:bg-[#1E2940] transition-colors duration-100;
   }
 
@@ -182,4 +201,20 @@
   .status-dot-green  { @apply status-dot bg-emerald-500; }
   .status-dot-amber  { @apply status-dot bg-amber-400; }
   .status-dot-red    { @apply status-dot bg-red-500; }
+
+  /* Phase placeholder card */
+  .phase-card {
+    @apply card p-8 flex flex-col items-center justify-center text-center gap-3 min-h-[200px];
+  }
+}
+
+/* ── Animations ───────────────────────────────────────────────────────────── */
+@layer utilities {
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade-in {
+    animation: fade-in 0.2s ease-out both;
+  }
 }

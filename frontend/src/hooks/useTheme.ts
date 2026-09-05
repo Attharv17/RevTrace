@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import type { Theme } from "@/types";
 
-const STORAGE_KEY = "ledgerpilot-theme";
+const STORAGE_KEY = "revtrace-theme";
 
 export function useTheme() {
   const [theme, setTheme] = useState<Theme>(() => {
